@@ -1,0 +1,38 @@
+//Script para verificar que se creo el mesero exitosamente
+pm.test("El código de respuesta es 200 OK o 201 Created", function () {
+    pm.expect(pm.response.code).to.be.oneOf([200, 201]);
+});
+
+// Guardar el ID del nuevo mesero en una variable
+const responseData = pm.response.json();
+pm.collectionVariables.set("1", responseData.data.id);
+
+//Script para verificar que se pudo ver la informacion de los meseros
+pm.test("El código de respuesta debe ser 200 OK", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("El nombre del mesero debe ser 'Juan Perez'", function () {
+    const responseData = pm.response.json();
+    pm.expect(responseData.data[0].nombre).to.eql("Juan Perez");
+});
+
+//Script para verificar que se pudo actualizar la informacion del mesero
+pm.test("El código de respuesta debe ser 200 OK", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("El nombre del mesero debe haberse actualizado", function () {
+    const responseData = pm.response.json();
+    pm.expect(responseData.nombre).to.eql("JUAN BEATO");
+});
+
+//Script para verificar que se pudo eliminar la informacion del mesero
+pm.test("El código de respuesta debe ser 200 OK", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("La respuesta debe contener el mensaje de eliminación exitosa", function () {
+    const responseData = pm.response.json();
+    pm.expect(responseData.message).to.eql("Mesero eliminado exitosamente.");
+});
